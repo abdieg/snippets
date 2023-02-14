@@ -1,0 +1,38 @@
+public class MiClaseSingleton { 
+
+private static volatile MiClaseSingleton instance = null;
+
+ private Properties propiedades;
+
+// El constructor es privado: solo se puede llamar desde otro método de la misma clase 
+private MiClaseSingleton() {
+   // leer archivo properties aquí
+    this.propiedades = new Properties();
+    InputStream is;
+    try {
+        is = getClass().getResourceAsStream("archivo.properties");
+        propiedades.load(is);
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+
+// Método que devuelve la instancia singleton, si no existe, la crea
+public static MiClaseSingleton getInstance() {
+    // Usamos un bloque sincronizado para asegurar que la instancia sólo se inicializa una vez 
+    if (instance == null) {
+        synchronized(MiClaseSingleton.class){
+            if(instance == null){ 
+                instance = new MiClaseSingleton(); 
+            } 
+        }
+    }
+    return instance;
+}
+
+public String obtenerPropiedad(String key){
+    return propiedades.getProperty(key);
+}
+
+}
+Textbox
